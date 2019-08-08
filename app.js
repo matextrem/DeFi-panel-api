@@ -3,8 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const web3 = require('web3');
 
-var uniswapRouter = require('./routes/uniswap');
+
+var ratesRouter = require('./routes/rates');
+var transactionsRouter = require('./routes/transactions');
+
 
 var app = express();
 
@@ -14,7 +18,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/uniswap', uniswapRouter);
+//Infura HttpProvider Endpoint
+app.locals.web3js = new web3(new web3.providers.HttpProvider(`https://${process.env.SELECTED_NETWORK}.infura.io/v3/${process.env.INFURA_API_KEY}`));
+
+app.use('/rates', ratesRouter);
+app.use('/transactions', transactionsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
