@@ -1,5 +1,5 @@
 {
-  "name": "rates-api",
+  "name": "loanscan-eth-api",
   "version": "0.0.0",
   "private": true,
   "scripts": {
