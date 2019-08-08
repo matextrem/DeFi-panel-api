@@ -1,3 +1,3 @@
-# Crypto ROI API
+# loanscan-eth-api
 
-Express API to get info related to uniswap tokens
+NodeJS API getting data from Compound and Loanscan.io
