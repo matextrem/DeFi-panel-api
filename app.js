@@ -1,16 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const web3 = require('web3');
 
 
-var ratesRouter = require('./routes/rates');
-var transactionsRouter = require('./routes/transactions');
+const ratesRouter = require('./routes/rates');
+const transactionsRouter = require('./routes/transactions');
 
 
-var app = express();
+const app = express();
 
 
 app.use(logger('dev'));
@@ -38,8 +38,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  console.log('error');
-  // res.render('error');
+  console.log(err);
 });
 
 module.exports = app;

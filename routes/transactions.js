@@ -8,7 +8,6 @@ router.get('/mint/:token', async (req, res, next) => {
         await transactionService.set(web3js, req.query.value, req.params.token);
         res.status(200).json({ status: "ok" });
     } catch (e) {
-        console.log(e);
         next(e);
     }
 });
@@ -19,7 +18,6 @@ router.get('/borrow/:token', async (req, res, next) => {
         await transactionService.borrow(web3js, req.query.value, req.params.token);
         res.status(200).json({ status: "ok" });
     } catch (e) {
-        console.log(e);
         next(e);
     }
 });

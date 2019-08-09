@@ -9,7 +9,13 @@ const ERC20 = {
     ABI: ABIS.ERC20
 }
 
+const rates = {
+    'DAI': { address: "0xf5dce57282a584d2746faf1593d3121fcac444dc" },
+    'USDC': { address: "0x39aa39c021dfbae8fac545936693ac917d5e7563" }
+}
+
 module.exports = {
     cTokens,
-    ERC20
+    ERC20,
+    rates
 };
