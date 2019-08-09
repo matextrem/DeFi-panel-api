@@ -17,8 +17,9 @@ router.get('/borrow/:token', async (req, res, next) => {
     const web3js = req.app.locals.web3js;
     try {
         await transactionService.borrow(web3js, req.query.value, req.params.token);
-        res.status(200);
+        res.status(200).json({ status: "ok" });
     } catch (e) {
+        console.log(e);
         next(e);
     }
 });
