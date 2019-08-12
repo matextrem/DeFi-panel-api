@@ -1,4 +1,4 @@
-# loanscan-eth-api
+# DeFi protocols API
 
 NodeJS API getting data from Compound and DyDx exchanges.
 
