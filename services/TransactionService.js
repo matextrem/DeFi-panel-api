@@ -1,6 +1,9 @@
 const utils = require('../utils');
 const web3 = require('web3');
 const EthereumTx = require('ethereumjs-tx').Transaction;
+const { Solo, AmountReference, AmountDenomination, ConfirmationType } = require('@dydxprotocol/solo');
+const BigNumber = require('bignumber.js');
+
 
 require('dotenv').config();
 
@@ -11,23 +14,83 @@ const setData = async (web3, value, token) => {
     //creating contracts object
     const CTokenContract = new web3.eth.Contract(utils.cTokens[token].ABI, utils.cTokens[token].address);
     const ERC20Contract = new web3.eth.Contract(utils.ERC20.ABI, utils.ERC20[token].address);
-    const tokenDecimals = utils.cTokens[token].decimals;
+    const tokenDecimals = utils.ERC20[token].decimals;
     const amount = (Number(value) * Math.pow(10, tokenDecimals)).toString();
     const data = await ERC20Contract.methods.approve(utils.cTokens[token].address, amount).encodeABI();
     await getTransactionSigned(web3, data, utils.ERC20[token].address, privateKey);
     return { CTokenContract, amount };
 }
 
-const set = async (web3js, value, token) => {
+const mint = async (web3js, value, token, protocol) => {
+    let response = {};
+    switch (protocol) {
+        case 'compound':
+            response = await mintCompound(web3js, value, token);
+            break;
+        case 'dydx':
+            response = await mintDyDx(web3js, value, token);
+            break;
+        default:
+            break;
+    }
+
+    return response;
+
+}
+
+const mintDyDx = async (provider, value, token) => {
+    const tokenDecimals = utils.ERC20[token].decimals;
+    const amount = (Number(value) * Math.pow(10, tokenDecimals)).toString();
+    const solo = new Solo(provider, process.env.SELECTED_NETWORK_ID);
+    const operation = solo.operation.initiate();
+    operation.deposit({
+        primaryAccountOwner: process.env.MY_ADDRESS,
+        primaryAccountId: new BigNumber('0'),
+        marketId: new BigNumber(utils.ERC20[token].marketId),
+        amount: {
+            value: new BigNumber(amount),
+            reference: AmountReference.Delta,
+            denomination: AmountDenomination.Actual,
+        },
+        from: process.env.MY_ADDRESS
+    });
+    const response = await operation.commit({
+        from: process.env.MY_ADDRESS,
+        gasPrice: '1000000000',
+        confirmationType: ConfirmationType.Confirmed,
+    });
+}
+
+const mintCompound = async (web3, value, token) => {
     const { CTokenContract, amount } = await setData(web3js, value, token);
     const data = await CTokenContract.methods.mint(amount).encodeABI();
     return await getTransactionSigned(web3js, data, utils.cTokens[token].address, privateKey);
 }
 
-const borrow = async (web3js, value, token) => {
-    const { CTokenContract, amount } = await setData(web3js, value, token);
+const borrowCompound = async (web3, value, token) => {
+    const { CTokenContract, amount } = await setData(web3, value, token);
     const data = await CTokenContract.methods.borrow(amount).encodeABI();
-    return await getTransactionSigned(web3js, data, utils.cTokens[token].address, privateKey);
+    return await getTransactionSigned(web3, data, utils.cTokens[token].address, privateKey);
+}
+
+const borrowDyDx = async () => { }
+
+const borrow = async (web3js, value, token, protocol) => {
+    let response = {};
+    switch (protocol) {
+        case 'compound':
+            response = await borrowCompound(web3js, value, token);
+            break;
+        case 'dydx':
+            response = await borrowDyDx();
+            break;
+        default:
+            break;
+    }
+
+    return response;
+
+
 }
 
 const getTransactionSigned = async (web3, data, to, privateKey) => {
@@ -52,6 +115,6 @@ const getTransactionSigned = async (web3, data, to, privateKey) => {
 
 
 module.exports = {
-    set,
+    mint,
     borrow
 };
