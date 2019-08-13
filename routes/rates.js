@@ -12,4 +12,14 @@ router.get('/:token', async (req, res, next) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  const protocol = (req.query.protocol).toLowerCase();
+  try {
+    const tokenRates = await rateService.getAll(protocol);
+    res.json({ protocol, rates: tokenRates });
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;

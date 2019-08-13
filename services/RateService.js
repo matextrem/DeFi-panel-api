@@ -17,6 +17,47 @@ const get = async (token, protocol) => {
     return tokenRate;
 }
 
+const getAll = async protocol => {
+    let rates = [];
+    switch (protocol) {
+        case 'compound':
+            rates = await getAllCompoundsRates();
+            break;
+        case 'dydx':
+            rates = await getAllDyDxRates();
+            break;
+        default:
+            break;
+    }
+    return rates;
+}
+
+const getAllCompoundsRates = async () => {
+    const tokenDetails = await axios.get("https://api.compound.finance/api/v2/ctoken");
+    const tokens = Object.keys(utils.cTokens);
+    return tokenDetails.data.cToken
+        .filter(token => tokens.includes(token.underlying_symbol))
+        .map(token => {
+            return {
+                token: token.underlying_symbol,
+                borrow_rate: (token.borrow_rate.value * 100).toFixed(2),
+                supply_rate: (token.supply_rate.value * 100).toFixed(2)
+            }
+        })
+}
+const getAllDyDxRates = async () => {
+    const tokenDetails = await axios.get("https://api.dydx.exchange/v1/markets");
+    const tokens = Object.keys(utils.cTokens);
+    return tokenDetails.data.markets
+        .filter(market => tokens.includes(market.name))
+        .map(market => {
+            return {
+                token: market.name,
+                borrow_rate: (market.totalBorrowAPY * 100).toFixed(2),
+                supply_rate: (market.totalSupplyAPY * 100).toFixed(2)
+            }
+        })
+}
 const getCompoundRate = async token => {
     const tokenDetails = await axios.get(`https://api.compound.finance/api/v2/ctoken?addresses[]=${utils.rates[token].address}`);
     const response = tokenDetails.data.cToken[0];
@@ -38,5 +79,6 @@ const getDyDxRate = async token => {
 }
 
 module.exports = {
-    get
+    get,
+    getAll
 };
