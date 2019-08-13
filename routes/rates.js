@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const rateService = require('../services/RateService');
 
+router.get('/all', async (req, res, next) => {
+  try {
+    const tokenRates = await rateService.getAll();
+    res.json({ protocols: tokenRates });
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.get('/:token', async (req, res, next) => {
   const protocol = (req.query.protocol).toLowerCase();
   try {

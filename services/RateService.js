@@ -17,7 +17,7 @@ const get = async (token, protocol) => {
     return tokenRate;
 }
 
-const getAll = async protocol => {
+const getAll = async (protocol = null) => {
     let rates = [];
     switch (protocol) {
         case 'compound':
@@ -27,9 +27,17 @@ const getAll = async protocol => {
             rates = await getAllDyDxRates();
             break;
         default:
+            rates = await getAllRates();
             break;
     }
     return rates;
+}
+
+const getAllRates = async () => {
+    const compoundRates = await getAllCompoundsRates();
+    const dydxRates = await getAllDyDxRates();
+    return [{ name: 'compound', rates: compoundRates }, { name: 'dxdy', rates: dydxRates }];
+
 }
 
 const getAllCompoundsRates = async () => {
