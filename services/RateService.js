@@ -34,9 +34,9 @@ const getAll = async (protocol = null) => {
 }
 
 const getAllRates = async () => {
-    const compoundRates = await getAllCompoundsRates();
-    const dydxRates = await getAllDyDxRates();
-    return [{ name: 'compound', rates: compoundRates }, { name: 'dxdy', rates: dydxRates }];
+    const compoundRates = (await getAllCompoundsRates()).sort((a, b) => a.token.localeCompare(b.token));
+    const dydxRates = (await getAllDyDxRates()).sort((a, b) => a.token.localeCompare(b.token));
+    return [{ name: 'compound', rates: compoundRates }, { name: 'dydx', rates: dydxRates }];
 
 }
 

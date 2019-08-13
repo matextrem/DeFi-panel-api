@@ -62,9 +62,9 @@ const mintDyDx = async (provider, value, token) => {
 }
 
 const mintCompound = async (web3, value, token) => {
-    const { CTokenContract, amount } = await setData(web3js, value, token);
+    const { CTokenContract, amount } = await setData(web3, value, token);
     const data = await CTokenContract.methods.mint(amount).encodeABI();
-    return await getTransactionSigned(web3js, data, utils.cTokens[token].address, privateKey);
+    return await getTransactionSigned(web3, data, utils.cTokens[token].address, privateKey);
 }
 
 const borrowCompound = async (web3, value, token) => {
