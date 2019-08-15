@@ -3,11 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const web3 = require('web3');
-
 
 const ratesRouter = require('./routes/rates');
-const transactionsRouter = require('./routes/transactions');
 
 
 const app = express();
@@ -18,11 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//Infura HttpProvider Endpoint
-app.locals.web3js = new web3(new web3.providers.HttpProvider(`https://${process.env.SELECTED_NETWORK}.infura.io/v3/${process.env.INFURA_API_KEY}`));
-
 app.use('/rates', ratesRouter);
-app.use('/transactions', transactionsRouter);
 
 
 // catch 404 and forward to error handler
