@@ -181,7 +181,7 @@ font-style: italic;
   <body>
   <h1>DeFi protocols API</h1>
     <div class="app-desc">NodeJS API getting data from Compound and DyDx exchange.</div>
-    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">More information: <a href="http://www.matiasdastugue.com">http://www.matiasdastugue.com</a></div>
     <div class="app-desc">Contact Info: <a href="matias.dastugue@altoros.com">matias.dastugue@altoros.com</a></div>
     <div class="app-desc">Version: 1.0.0</div>
     <div class="app-desc">BasePath:/altoros/DeFi-eth-api/1.0.0</div>
@@ -196,42 +196,35 @@ font-style: italic;
   <div class="method-summary"></div>
   <h4><a href="#Developers">Developers</a></h4>
   <ul>
-  <li><a href="#borrowTokens"><code><span class="http-method">post</span> /transactions/borrow/{token}</code></a></li>
+  <li><a href="#getAllRates"><code><span class="http-method">get</span> /rates/all</code></a></li>
   <li><a href="#getRates"><code><span class="http-method">get</span> /rates/{token}</code></a></li>
-  <li><a href="#mintTokens"><code><span class="http-method">post</span> /transactions/mint/{token}</code></a></li>
   </ul>
 
   <h1><a name="Developers">Developers</a></h1>
-  <div class="method"><a name="borrowTokens"/>
+  <div class="method"><a name="getAllRates"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /transactions/borrow/{token}</code></pre></div>
-    <div class="method-summary">borrow tokens (<span class="nickname">borrowTokens</span>)</div>
-    <div class="method-notes">By passing in the appropriate options, you can borrow tokens thru the different protocols</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">token (required)</div>
-
-      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; pass a token name </div>
-    </div>  <!-- field-items -->
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /rates/all</code></pre></div>
+    <div class="method-summary">get all rates (<span class="nickname">getAllRates</span>)</div>
+    <div class="method-notes">By passing in the appropriate options, you can get all the rates</div>
 
 
 
 
-    <h3 class="field-label">Query parameters</h3>
-    <div class="field-items">
-      <div class="param">protocol (required)</div>
-
-      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; pass a protocol name </div><div class="param">value (required)</div>
-
-      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; pass a token value </div>
-    </div>  <!-- field-items -->
 
 
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#RateItems">RateItems</a>
+      
+    </div>
 
     <!--Todo: process Response Object and its headers, schema, examples -->
 
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>""</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -242,8 +235,8 @@ font-style: italic;
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    OK
-        <a href="#"></a>
+    get results matching criteria
+        <a href="#RateItems">RateItems</a>
     <h4 class="field-label">400</h4>
     bad input parameter
         <a href="#"></a>
@@ -309,53 +302,6 @@ font-style: italic;
         <a href="#"></a>
   </div> <!-- method -->
   <hr/>
-  <div class="method"><a name="mintTokens"/>
-    <div class="method-path">
-    <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /transactions/mint/{token}</code></pre></div>
-    <div class="method-summary">mint tokens (<span class="nickname">mintTokens</span>)</div>
-    <div class="method-notes">By passing in the appropriate options, you can mint tokens thru the different protocols</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-      <div class="param">token (required)</div>
-
-      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; pass a token name </div>
-    </div>  <!-- field-items -->
-
-
-
-
-    <h3 class="field-label">Query parameters</h3>
-    <div class="field-items">
-      <div class="param">protocol (required)</div>
-
-      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; pass a protocol name </div><div class="param">value (required)</div>
-
-      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; pass a token value </div>
-    </div>  <!-- field-items -->
-
-
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-      <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-        <a href="#"></a>
-    <h4 class="field-label">400</h4>
-    bad input parameter
-        <a href="#"></a>
-  </div> <!-- method -->
-  <hr/>
 
   <h2><a name="__Models">Models</a></h2>
   [ Jump to <a href="#__Methods">Methods</a> ]
@@ -363,7 +309,11 @@ font-style: italic;
   <h3>Table of Contents</h3>
   <ol>
     <li><a href="#Rate"><code>Rate</code> - </a></li>
+    <li><a href="#RateAll"><code>RateAll</code> - </a></li>
+    <li><a href="#RateAllItem"><code>RateAllItem</code> - </a></li>
     <li><a href="#RateItem"><code>RateItem</code> - </a></li>
+    <li><a href="#RateItems"><code>RateItems</code> - </a></li>
+    <li><a href="#RateObj"><code>RateObj</code> - </a></li>
   </ol>
 
   <div class="model">
@@ -375,12 +325,41 @@ font-style: italic;
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="RateAll"><code>RateAll</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RateAllItem"><code>RateAllItem</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">rates </div><div class="param-desc"><span class="param-type"><a href="#RateAll">RateAll</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="RateItem"><code>RateItem</code> - </a> <a class="up" href="#__Models">Up</a></h3>
     <div class='model-description'></div>
     <div class="field-items">
       <div class="param">protocol </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">token </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
 <div class="param">rates </div><div class="param-desc"><span class="param-type"><a href="#Rate">Rate</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RateItems"><code>RateItems</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RateObj"><code>RateObj</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">supply_rate (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">borrow_rate (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
     </div>  <!-- field-items -->
   </div>
   </body>
